@@ -31,6 +31,8 @@ class CODABAR(Barcode):
     name = "Codabar (NW-7)"
 
     def __init__(self, code, writer=None, narrow=2, wide=5) -> None:
+        if code == "":
+            raise BarcodeError("Codabar cannot be empty.")
         self.code = code
         self.writer = writer or self.default_writer()
         self.narrow = narrow

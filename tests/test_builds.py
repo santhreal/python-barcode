@@ -1,6 +1,10 @@
 from __future__ import annotations
 
+import pytest
+
 from barcode import get_barcode
+from barcode.codabar import CODABAR
+from barcode.errors import BarcodeError
 
 
 def test_ean8_builds() -> None:
@@ -15,3 +19,12 @@ def test_ean8_builds_with_longer_bars() -> None:
     ean = get_barcode("ean8", "40267708", options={"guardbar": True})
     bc = ean.build()
     assert ref == bc[0]
+
+
+def test_codabar_rejects_empty() -> None:
+    with pytest.raises(BarcodeError, match="empty"):
+        CODABAR("")
+    with pytest.raises(BarcodeError, match="empty"):
+        get_barcode("codabar", "")
+    with pytest.raises(BarcodeError, match="empty"):
+        get_barcode("nw-7", "")
