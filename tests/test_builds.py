@@ -1,6 +1,15 @@
 from __future__ import annotations
 
+import pytest
+
 from barcode import get_barcode
+from barcode.codex import Code128
+from barcode.errors import BarcodeError
+
+
+def test_code128_rejects_empty() -> None:
+    with pytest.raises(BarcodeError, match="empty"):
+        Code128("")
 
 
 def test_ean8_builds() -> None:

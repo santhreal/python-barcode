@@ -151,7 +151,7 @@ class Code128(Barcode):
     buffer: str
 
     def __init__(self, code: str, writer=None) -> None:
-        if not code:
+        if code == "":
             raise BarcodeError("Code 128 cannot be empty.")
         self.code = code
         self.writer = writer or self.default_writer()
