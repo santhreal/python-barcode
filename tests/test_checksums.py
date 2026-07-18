@@ -1,6 +1,10 @@
 from __future__ import annotations
 
+import pytest
+
 from barcode import get_barcode
+from barcode.codex import Code128
+from barcode.errors import BarcodeError
 
 
 def test_code39_checksum() -> None:
@@ -59,3 +63,11 @@ def test_issn_checksum_x() -> None:
     # When (11 - weighted_sum % 11) % 11 == 10, checksum should be "X".
     issn = get_barcode("issn", "0000006")
     assert issn.issn == "0000006X"  # type: ignore[attr-defined]
+
+
+def test_code128_rejects_empty() -> None:
+    with pytest.raises(BarcodeError, match="empty"):
+        Code128("")
+    with pytest.raises(BarcodeError, match="empty"):
+        get_barcode("code128", "")
+
