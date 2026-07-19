@@ -464,12 +464,12 @@ else:
             self._draw = ImageDraw.Draw(self._image)
 
         def _paint_module(self, xpos: float, ypos: float, width: float, color):
+            # Inclusive Pillow coords: -1px shrink must not invert sub-pixel modules.
+            x0 = mm2px(xpos, self.dpi)
+            x1 = max(x0, mm2px(xpos + width, self.dpi) - 1)
             size = [
-                (mm2px(xpos, self.dpi), mm2px(ypos, self.dpi)),
-                (
-                    mm2px(xpos + width, self.dpi) - 1,
-                    mm2px(ypos + self.module_height, self.dpi),
-                ),
+                (x0, mm2px(ypos, self.dpi)),
+                (x1, mm2px(ypos + self.module_height, self.dpi)),
             ]
             self._draw.rectangle(size, outline=color, fill=color)
 

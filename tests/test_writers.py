@@ -4,6 +4,7 @@ import os
 from io import BytesIO
 
 from barcode import EAN13
+from barcode.codex import Code128
 from barcode.writer import ImageWriter
 from barcode.writer import SVGWriter
 
@@ -33,6 +34,17 @@ if ImageWriter is not None:
             EAN13("100000011111", writer=writer).write(
                 f, options={"background": "rgba(255,0,0,0)"}
             )
+
+    def test_imagewriter_render_at_screen_dpi() -> None:
+        assert ImageWriter is not None
+
+        img = Code128("HI", writer=ImageWriter(dpi=72)).render()
+        assert img.size[0] > 0
+        assert img.size[1] > 0
+
+        img = EAN13("5901234123457", writer=ImageWriter(dpi=72)).render()
+        assert img.size[0] > 0
+        assert img.size[1] > 0
 
 
 def test_saving_svg_to_byteio() -> None:
